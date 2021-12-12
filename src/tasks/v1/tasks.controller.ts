@@ -2,7 +2,7 @@ import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IAM } from 'src/common/decorators/iam.decorator';
 import { User } from 'src/users/user.entity';
-import { CreateTaskDto } from './dto/tasks.dto';
+import { CreateTaskDto, GetTasksByDateDto } from './dto/tasks.dto';
 import { TasksService } from './services/tasks.service';
 
 @UseGuards(AuthGuard())
@@ -18,5 +18,10 @@ export class TasksController {
   @Post('/toggle/:id')
   toggle(@Param('id') id: string, @IAM('id') userId: string) {
     return this.service.toggle(id, userId);
+  }
+
+  @Post('/getByDate')
+  delete(@Body() body: GetTasksByDateDto, @IAM('id') userId: string) {
+    return this.service.getTasksByDate(body.date, userId);
   }
 }

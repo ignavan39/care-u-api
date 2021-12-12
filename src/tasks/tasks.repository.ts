@@ -19,4 +19,11 @@ export class TasksRepository extends Repository<Task> {
       throw e;
     }
   }
+
+  async getByDate(date: string, userId: string): Promise<Task[]> {
+    return this.createQueryBuilder('t')
+      .where('t.userId =:userId', { userId })
+      .andWhere('t."date"::date =:targetDate::date', { targetDate: date })
+      .getMany();
+  }
 }

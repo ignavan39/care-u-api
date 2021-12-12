@@ -41,4 +41,21 @@ export class TasksService {
       throw new NotFoundException('task not found');
     }
   }
+
+  async delete(taskId: string, userId: string): Promise<boolean> {
+    const task = await this.repository.delete({
+      id: taskId,
+      user: {
+        id: userId,
+      },
+    });
+    if (task.affected === 0) {
+      throw new NotFoundException('task not found');
+    }
+    return true;
+  }
+
+  async getTasksByDate(date: string, userId: string): Promise<Task[]> {
+    return this.repository.getByDate(date, userId);
+  }
 }

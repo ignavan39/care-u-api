@@ -20,3 +20,8 @@ export class CreateTaskDto {
   @MinLength(1)
   title: string;
 }
+
+export class GetTasksByDateDto {
+  @IsISO8601()
+  date: string;
+}
