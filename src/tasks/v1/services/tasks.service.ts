@@ -34,15 +34,9 @@ export class TasksService {
     }
   }
 
-  async toggle(taskId: string, userId: string): Promise<boolean> {
+  async toggle(taskId: string, userId: string): Promise<{ isReady: boolean }> {
     try {
-      const res = await this.repository.query(
-        `
-        UPDATE tasks SET "isReady" = NOT "isReady" WHERE id = $1 AND "userId" = $2 RETURNING "isReady"
-      `,
-        [taskId, userId],
-      );
-      return res[0];
+      return await this.repository.toggle(taskId, userId);
     } catch {
       throw new NotFoundException('task not exsist');
     }
