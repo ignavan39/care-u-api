@@ -38,7 +38,7 @@ export class TasksService {
     try {
       return await this.repository.toggle(taskId, userId);
     } catch {
-      throw new NotFoundException('task not exsist');
+      throw new NotFoundException('task not found');
     }
   }
 }
