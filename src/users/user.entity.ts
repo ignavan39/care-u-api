@@ -1,7 +1,8 @@
 import { Base } from 'src/common/entities/base';
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, Unique } from 'typeorm';
 import * as crypto from 'crypto';
 
+@Unique(['email'])
 @Entity('users')
 export class User extends Base {
   @BeforeInsert()
@@ -26,4 +27,7 @@ export class User extends Base {
 
   @Column({ type: 'text', select: false })
   password: string;
+
+  @Column('integer', { default: 0 })
+  cost: number;
 }

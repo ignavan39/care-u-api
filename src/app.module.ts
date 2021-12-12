@@ -5,6 +5,11 @@ import { AppService } from './app.service';
 import { TypeOrmConfigService } from './common/database/typeorm.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { SkinsModule } from './skins/skins.module';
+import { TagsModule } from './tags/tags.module';
+import { NewsModule } from './news/news.module';
+import { UserSettingsModule } from './user-settings/user-settings.module';
+import { TasksModule } from './tasks/tasks.module';
 import * as configuration from './config';
 
 @Module({
@@ -20,6 +25,11 @@ import * as configuration from './config';
     }),
     UsersModule,
     AuthModule,
+    SkinsModule,
+    TagsModule,
+    NewsModule,
+    UserSettingsModule,
+    TasksModule,
   ],
   controllers: [],
   providers: [AppService],
