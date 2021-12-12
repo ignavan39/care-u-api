@@ -8,8 +8,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const isDevelopmentEnv =
-      this.configService.get<string>('environment') === 'development';
+    const isDevelopmentEnv = this.configService.get<string>('environment') === 'development';
 
     return {
       type: 'postgres',
