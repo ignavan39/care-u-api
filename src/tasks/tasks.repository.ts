@@ -1,5 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Task } from './task.entity';
+import dayjs from 'dayjs'
 
 @EntityRepository(Task)
 export class TasksRepository extends Repository<Task> {
@@ -36,8 +37,8 @@ export class TasksRepository extends Repository<Task> {
           "t"."createdAt"     AS "t_createdAt",
           "t"."updatedAt"     AS "t_updatedAt",
           "t"."deletedAt"     AS "t_deletedAt",
-          "t"."date"          AS "t_date",
           "t"."date"::date    AS "t_day",
+          "t"."date"          AS "t_date",
           "t"."dateEnd"       AS "t_dateEnd",
           "t"."isReady"       AS "t_isReady",
           "t"."title"         AS "t_title",
@@ -55,9 +56,10 @@ export class TasksRepository extends Repository<Task> {
     );
     const result = new Map<string, Array<Omit<Task, 'user'>>>();
     for (const task of data) {
-      const currentDateTasks = result.get(task.t_day);
+      const day = dayjs(task.t_day).format('YYYY-MM-DD');
+      const currentDateTasks = result.get(day);
       const parsedTask: Omit<Task, 'user'> = {
-        id: task.t_day,
+        id: task.t_id,
         createdAt: task.t_createdAt,
         updatedAt: task.t_updatedAt,
         date: task.t_date,
@@ -68,10 +70,10 @@ export class TasksRepository extends Repository<Task> {
         deletedAt: task.t_deletedAt,
       };
       if (!currentDateTasks) {
-        result.set(task.t_day, [parsedTask]);
+        result.set(day, [parsedTask]);
       } else {
         currentDateTasks.push(parsedTask);
-        result.set(task.t_day, currentDateTasks);
+        result.set(day, currentDateTasks);
       }
     }
     return Array.from(result);
