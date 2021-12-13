@@ -1,4 +1,13 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IAM } from 'src/common/decorators/iam.decorator';
 import { User } from 'src/users/user.entity';
@@ -42,7 +51,7 @@ export class TasksController {
   @ApiOperation({ summary: 'delete task' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiResponse({ type: Boolean })
-  @Post('/delete/:id')
+  @Delete('/delete/:id')
   delete(@Param('id') id: string, @IAM('id') userId: string): Promise<boolean> {
     return this.service.delete(id, userId);
   }
@@ -50,11 +59,11 @@ export class TasksController {
   @ApiOperation({ summary: 'get task by date' })
   @ApiBody({ type: GetTasksByDateDto })
   @ApiResponse({ type: [Task] })
-  @Post('/getByDate')
+  @Get('/getByDate')
   getByDate(
-    @Body() body: GetTasksByDateDto,
+    @Query() query: GetTasksByDateDto,
     @IAM('id') userId: string,
   ): Promise<Task[]> {
-    return this.service.getTasksByDate(body.date, userId);
+    return this.service.getTasksByDate(query.date, userId);
   }
 }
