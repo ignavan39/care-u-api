@@ -1,7 +1,8 @@
 import { Base } from 'src/common/entities/base';
 import { User } from 'src/users/user.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Unique } from 'typeorm';
 
+@Unique(['user', 'date'])
 @Entity('tasks')
 export class Task extends Base {
   @Column('timestamp')

@@ -23,7 +23,10 @@ $ yarn start:dev
 # production mode
 $ yarn start:prod
 ```
-
+# Api
+```
+host: localhost:$port/api
+```
 ## Test
 
 ```bash
