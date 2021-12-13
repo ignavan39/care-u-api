@@ -12,7 +12,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { IAM } from 'src/common/decorators/iam.decorator';
 import { User } from 'src/users/user.entity';
 import { Task } from '../task.entity';
-import { CreateTaskDto, GetTasksByDateDto } from './dto/tasks.dto';
+import { CreateTaskDto, GetManyTasksDto } from './dto/tasks.dto';
 import { TasksService } from './services/tasks.service';
 import {
   ApiOperation,
@@ -57,13 +57,13 @@ export class TasksController {
   }
 
   @ApiOperation({ summary: 'get task by date' })
-  @ApiBody({ type: GetTasksByDateDto })
+  @ApiBody({ type: GetManyTasksDto })
   @ApiResponse({ type: [Task] })
-  @Get('/getByDate')
-  getByDate(
-    @Query() query: GetTasksByDateDto,
+  @Get('/getMany')
+  getMany(
+    @Query() query: GetManyTasksDto,
     @IAM('id') userId: string,
-  ): Promise<Task[]> {
-    return this.service.getTasksByDate(query.date, userId);
+  ): Promise<[string, Omit<Task, 'user'>[]][]> {
+    return this.service.getMany(query, userId);
   }
 }

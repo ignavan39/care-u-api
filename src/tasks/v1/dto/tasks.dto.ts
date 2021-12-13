@@ -21,7 +21,12 @@ export class CreateTaskDto {
   title: string;
 }
 
-export class GetTasksByDateDto {
+export class GetManyTasksDto {
+  @IsNotEmpty()
   @IsISO8601()
-  date: string;
+  from: string;
+
+  @IsOptional()
+  @IsISO8601()
+  to?: string;
 }

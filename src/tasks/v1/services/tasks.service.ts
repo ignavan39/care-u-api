@@ -6,7 +6,7 @@ import {
 import { Task } from 'src/tasks/task.entity';
 import { TasksRepository } from 'src/tasks/tasks.repository';
 import { User } from 'src/users/user.entity';
-import { CreateTaskDto } from '../dto/tasks.dto';
+import { CreateTaskDto, GetManyTasksDto } from '../dto/tasks.dto';
 
 @Injectable()
 export class TasksService {
@@ -55,7 +55,10 @@ export class TasksService {
     return true;
   }
 
-  async getTasksByDate(date: string, userId: string): Promise<Task[]> {
-    return this.repository.getByDate(date, userId);
+  async getMany(
+    args: GetManyTasksDto,
+    userId: string,
+  ): Promise<[string, Omit<Task, 'user'>[]][]> {
+    return this.repository.getByDate(userId, args.from, args.to);
   }
 }
