@@ -12,7 +12,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { IAM } from 'src/common/decorators/iam.decorator';
 import { User } from 'src/users/user.entity';
 import { Task } from '../task.entity';
-import { CreateTaskDto, GetManyTasksDto } from './dto/tasks.dto';
+import {
+  CreateTaskDto,
+  GetManyTasksDto,
+  GetTaskCountersDto,
+} from './dto/tasks.dto';
 import { TasksService } from './services/tasks.service';
 import {
   ApiOperation,
@@ -63,7 +67,22 @@ export class TasksController {
   getMany(
     @Query() query: GetManyTasksDto,
     @IAM('id') userId: string,
-  ): Promise<[string, Omit<Task, 'user'>[]][]> {
+  ): Promise<Task[]> {
     return this.service.getMany(query, userId);
+  }
+
+  @ApiOperation({ summary: 'get task counters by date' })
+  @ApiBody({ type: GetTaskCountersDto })
+  @ApiResponse({ type: [Task] })
+  @Get('/getCounters')
+  getCounters(
+    @Query() query: GetTaskCountersDto,
+    @IAM('id') userId: string,
+  ): Promise<{
+    date: string;
+    countOfDoneTasks: number;
+    countOfNotDoneTasks: number;
+  }> {
+    return this.service.getCounters(query, userId);
   }
 }

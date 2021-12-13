@@ -6,7 +6,11 @@ import {
 import { Task } from 'src/tasks/task.entity';
 import { TasksRepository } from 'src/tasks/tasks.repository';
 import { User } from 'src/users/user.entity';
-import { CreateTaskDto, GetManyTasksDto } from '../dto/tasks.dto';
+import {
+  CreateTaskDto,
+  GetManyTasksDto,
+  GetTaskCountersDto,
+} from '../dto/tasks.dto';
 
 @Injectable()
 export class TasksService {
@@ -55,10 +59,18 @@ export class TasksService {
     return true;
   }
 
-  async getMany(
-    args: GetManyTasksDto,
+  async getMany(args: GetManyTasksDto, userId: string): Promise<Task[]> {
+    return this.repository.getByDate(userId, args.date);
+  }
+
+  async getCounters(
+    args: GetTaskCountersDto,
     userId: string,
-  ): Promise<[string, Omit<Task, 'user'>[]][]> {
-    return this.repository.getByDate(userId, args.from, args.to);
+  ): Promise<{
+    date: string;
+    countOfDoneTasks: number;
+    countOfNotDoneTasks: number;
+  }> {
+    return this.repository.getCountersByDates(args.from, args.to, userId);
   }
 }
