@@ -78,11 +78,13 @@ export class TasksController {
   getCounters(
     @Query() query: GetTaskCountersDto,
     @IAM('id') userId: string,
-  ): Promise<{
-    date: string;
-    countOfDoneTasks: number;
-    countOfNotDoneTasks: number;
-  }> {
+  ): Promise<
+    {
+      date: string;
+      countOfDoneTasks: number;
+      countOfNotDoneTasks: number;
+    }[]
+  > {
     return this.service.getCounters(query, userId);
   }
 }

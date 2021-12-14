@@ -31,19 +31,25 @@ export class TasksRepository extends Repository<Task> {
     from: string,
     to: string,
     userId: string,
-  ): Promise<{
-    date: string;
-    countOfDoneTasks: number;
-    countOfNotDoneTasks: number;
-  }> {
+  ): Promise<
+    {
+      date: string;
+      countOfDoneTasks: number;
+      countOfNotDoneTasks: number;
+    }[]
+  > {
     const result = await this.query(
       `
-      SELECT DISTINCT (date::date) as date, 
-                                COALESCE(sum(CASE WHEN "isReady" = true THEN 1 ELSE 0 END), 0) AS done_tasks,
-                                COALESCE(sum(CASE WHEN "isReady" = false THEN 1 ELSE 0 END), 0) AS not_done_tasks
+      SELECT DISTINCT (tasks.date::date) as date,done_tasks,not_done_tasks
       FROM tasks
-      WHERE "date"::date >= $1::date AND "date"::date <= $2::date AND "userId" = $3
-      GROUP BY date
+      LEFT JOIN (SELECT 
+                                COALESCE(sum(CASE WHEN "isReady" = true THEN 1 ELSE 0 END), 0) AS done_tasks,
+                                COALESCE(sum(CASE WHEN "isReady" = false THEN 1 ELSE 0 END), 0) AS not_done_tasks,
+                                t.date::date as day
+                                FROM tasks t
+                                GROUP BY t.date::date
+                        ) AS s ON s.day = tasks.date::date
+      WHERE tasks."date"::date >= $1::date AND tasks."date"::date <= $2::date AND "userId" = $3
     `,
       [from, to, userId],
     );

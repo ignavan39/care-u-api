@@ -16,7 +16,7 @@ import {
 export class TasksService {
   constructor(private readonly repository: TasksRepository) {}
 
-  create(args: CreateTaskDto, user: User): Promise<Task> {
+  async create(args: CreateTaskDto, user: User): Promise<Task> {
     const date = new Date(args.date);
     let dateEnd;
     if (args.dateEnd) {
@@ -26,7 +26,7 @@ export class TasksService {
       throw new BadRequestException('incorrect times');
     }
     try {
-      return this.repository.save({
+      return await this.repository.save({
         title: args.title,
         dateEnd,
         date,
@@ -66,11 +66,13 @@ export class TasksService {
   async getCounters(
     args: GetTaskCountersDto,
     userId: string,
-  ): Promise<{
-    date: string;
-    countOfDoneTasks: number;
-    countOfNotDoneTasks: number;
-  }> {
+  ): Promise<
+    {
+      date: string;
+      countOfDoneTasks: number;
+      countOfNotDoneTasks: number;
+    }[]
+  > {
     return this.repository.getCountersByDates(args.from, args.to, userId);
   }
 }
