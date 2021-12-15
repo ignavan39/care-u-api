@@ -1,6 +1,14 @@
 import { Base } from 'src/common/entities/base';
-import { BeforeInsert, BeforeUpdate, Column, Entity, Unique } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 import * as crypto from 'crypto';
+import { NewsUsers } from 'src/news/news-user.entity';
 
 @Unique(['email'])
 @Entity('users')
@@ -30,4 +38,7 @@ export class User extends Base {
 
   @Column('integer', { default: 0 })
   cost: number;
+
+  @OneToMany(() => NewsUsers, (nw) => nw.user)
+  likedNews: NewsUsers;
 }

@@ -2,8 +2,21 @@ version: '3.9'
 volumes:
   postgres_data:
   pgadmin:
+  rabbitmq_data:
 
 services:
+  rabbitmq:
+   image: rabbitmq:3-management-alpine
+   volumes:
+     - 'rabbitmq_data:/data'
+   ports:
+     - '5672:5672'
+     - '15672:15672'
+   healthcheck:
+     test: rabbitmq-diagnostics -q ping
+     interval: 10s
+     timeout: 5s
+     retries: 3
 
   postgres:
     container_name: care-u-db

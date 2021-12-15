@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AmqpModule } from 'nestjs-amqp';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { TypeOrmConfigService } from './common/database/typeorm.service';
@@ -23,6 +24,7 @@ import * as configuration from './config';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    AmqpModule.forRoot({}),
     UsersModule,
     AuthModule,
     SkinsModule,

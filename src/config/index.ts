@@ -19,6 +19,10 @@ export const validationSchema = Joi.object({
   DATABASE_NAME: Joi.string().required(),
   DATABASE_USER: Joi.string().required(),
   DATABASE_PASS: Joi.string().required(),
+  AMQP_HOST: Joi.string().required(),
+  AMQP_PORT: Joi.string().required(),
+  AMQP_USERNAME: Joi.string().required(),
+  AMQP_PASSWORD: Joi.string().required(),
   // redis
 });
 
@@ -42,6 +46,12 @@ export const configuration = () => ({
     name: process.env.DATABASE_NAME,
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
+  },
+  amqp: {
+    hostname: process.env.AMQP_HOST,
+    port: parseInt(process.env.AMQP_PORT, 10),
+    username: process.env.AMQP_USERNAME,
+    password: process.env.AMQP_PASSWORD,
   },
 });
 
