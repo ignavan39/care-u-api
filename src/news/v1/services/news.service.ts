@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { NewsUsers } from 'src/news/news-user.entity';
 import { NewsUsersRepository } from 'src/news/news-users.repository';
@@ -35,18 +36,22 @@ export class NewsService {
   async likeNews(userId: string, newsId: string): Promise<NewsUsers> {
     try {
       return await this.newsUsersRepository.save({
-        user: {
-          id: userId,
-        },
-        news: {
-          id: newsId,
-        },
+        userId,
+        newsId,
       });
     } catch (e) {
       if (e?.routine === '_bt_check_unique') {
         throw new BadRequestException('duplicate like');
       }
       throw new InternalServerErrorException(e);
+    }
+  }
+
+  async dislikeNews(userId: string, newsId: string): Promise<void> {
+    try {
+      await this.newsUsersRepository.delete({ userId, newsId });
+    } catch {
+      throw new NotFoundException();
     }
   }
 }

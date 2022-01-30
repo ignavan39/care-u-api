@@ -1,7 +1,7 @@
 import { Base } from 'src/common/entities/base';
+import { NewsTags } from 'src/tags/news-tags.entity';
 import { User } from 'src/users/user.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { NewsUsers } from './news-user.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('news')
 export class News extends Base {
@@ -13,4 +13,7 @@ export class News extends Base {
 
   @ManyToOne(() => User)
   author: User;
+
+  @OneToMany(() => NewsTags, (nt) => nt.news)
+  newsTags: NewsTags[];
 }
