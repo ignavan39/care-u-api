@@ -12,6 +12,7 @@ import { NewsModule } from './news/news.module';
 import { UserSettingsModule } from './user-settings/user-settings.module';
 import { TasksModule } from './tasks/tasks.module';
 import * as configuration from './config';
+import { AwsModule } from './common/aws/s3/s3.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import * as configuration from './config';
     NewsModule,
     UserSettingsModule,
     TasksModule,
+    AwsModule,
   ],
   controllers: [],
   providers: [AppService],

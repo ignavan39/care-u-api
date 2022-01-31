@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { News } from './news.entity';
 
-@Unique(['user.id', 'news.id'])
+@Unique(['userId', 'newsId'])
 @Entity('news-users')
 export class NewsUsers {
   @PrimaryGeneratedColumn('uuid')
