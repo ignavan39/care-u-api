@@ -11,7 +11,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,6 +59,8 @@ jobs:
 
 
   alert:
+    if: always()
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -73,8 +74,8 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ github.actor }}:
-            status ${{ build.status }}
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
             
             Repository: ${{ github.repository }}
             
